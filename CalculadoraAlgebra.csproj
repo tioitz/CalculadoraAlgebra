@@ -7,8 +7,4 @@
     <PublishTrimmed>false</PublishTrimmed>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="wwwroot\**" CopyToPublishDirectory="PreserveNewest" />
-  </ItemGroup>
-
 </Project>
