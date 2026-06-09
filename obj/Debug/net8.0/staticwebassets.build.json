@@ -1,0 +1,39 @@
+{
+  "Version": 1,
+  "Hash": "B9IIRrk7/eaQnj3I1rjMLYZ+9i71+InW8OkkaN/uDd8=",
+  "Source": "CalculadoraAlgebra",
+  "BasePath": "_content/CalculadoraAlgebra",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "CalculadoraAlgebra/wwwroot",
+      "Source": "CalculadoraAlgebra",
+      "ContentRoot": "/home/namiki/Documentos/Namiki/CalculadoraAlgebra/wwwroot/",
+      "BasePath": "_content/CalculadoraAlgebra",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/home/namiki/Documentos/Namiki/CalculadoraAlgebra/wwwroot/index.html",
+      "SourceId": "CalculadoraAlgebra",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/namiki/Documentos/Namiki/CalculadoraAlgebra/wwwroot/",
+      "BasePath": "_content/CalculadoraAlgebra",
+      "RelativePath": "index.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/index.html"
+    }
+  ]
+}

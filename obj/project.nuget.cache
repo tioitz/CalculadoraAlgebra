@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "RRjCnJbVsl1vkL9r6Tv5q2FteKdOaAVgvElLV8VywjTAkhRBXf2tsfM9nVdwTzqAlIaCyTAd5Ing51UBnDcyDg==",
+  "success": true,
+  "projectFilePath": "/home/namiki/Documentos/Namiki/CalculadoraAlgebra/CalculadoraAlgebra.csproj",
+  "expectedPackageFiles": [
+    "/home/namiki/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.27/microsoft.aspnetcore.app.ref.8.0.27.nupkg.sha512"
+  ],
+  "logs": []
+}

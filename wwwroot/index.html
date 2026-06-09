@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Álgebra</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        
+        .tab-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .tab-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group.full {
+            grid-template-columns: 1fr;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #5568d3;
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        .result-box {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .result-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .result-value {
+            font-size: 2em;
+            color: #667eea;
+            font-weight: bold;
+            word-break: break-all;
+        }
+        
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .error.show {
+            display: block;
+        }
+        
+        .ans-display {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #2e7d32;
+            font-weight: 600;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Álgebra</h1>
+        <p class="subtitle">Digite "ans" para reutilizar o último resultado</p>
+        
+        <div class="ans-display" id="ansDisplay">ANS = 0</div>
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="mudarAba(0)">Aritmética</button>
+            <button class="tab-btn" onclick="mudarAba(1)">Trigonometria</button>
+            <button class="tab-btn" onclick="mudarAba(2)">Hiperbólicas</button>
+            <button class="tab-btn" onclick="mudarAba(3)">Especiais</button>
+            <button class="tab-btn" onclick="mudarAba(4)">Reta</button>
+            <button class="tab-btn" onclick="mudarAba(5)">Circunferência</button>
+        </div>
+        
+        <!-- ARITMÉTICA -->
+        <div class="tab-content active" id="aba0">
+            <div class="input-group">
+                <div>
+                    <label>Operação</label>
+                    <select id="aritOp" style="width:100%; padding:12px; border:2px solid #e0e0e0; border-radius:8px;">
+                        <option value="soma">Soma (+)</option>
+                        <option value="subtracao">Subtração (-)</option>
+                        <option value="multiplicacao">Multiplicação (×)</option>
+                        <option value="divisao">Divisão (÷)</option>
+                        <option value="potencia">Potência (x^y)</option>
+                        <option value="modulo">Resto (mod)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-group">
+                <div><label>Número 1</label><input type="number" id="arit1" placeholder="ex: 5"></div>
+                <div><label>Número 2</label><input type="number" id="arit2" placeholder="ex: 3"></div>
+            </div>
+            <div class="button-group">
+                <button onclick="calcularAritmetica()">Calcular</button>
+            </div>
+            <div id="aritRaiz" style="display:none;">
+                <div class="input-group full">
+                    <div><label>Número</label><input type="number" id="aritN" placeholder="ex: 16"></div>
+                </div>
+                <button onclick="calcularRaiz()">Calcular Raiz</button>
+            </div>
+            <div class="input-group full">
+                <button onclick="obterPI()" style="background: #764ba2;">Obter PI</button>
+            </div>
+            <div class="result-box" id="aritResult" style="display:none;">
+                <div class="result-label">Resultado</div>
+                <div class="result-value" id="aritValue">0</div>
+            </div>
+            <div class="error" id="aritError"></div>
+        </div>
+        
+        <!-- TRIGONOMETRIA -->
+        <div class="tab-content" id="aba1">
+            <div class="input-group">
+                <div>
+                    <label>Função</label>
+                    <select id="trigFunc" style="width:100%; padding:12px; border:2px solid #e0e0e0; border-radius:8px;">
+                        <option value="seno">Seno (sin)</option>
+                        <option value="cosseno">Cosseno (cos)</option>
+                        <option value="tangente">Tangente (tan)</option>
+                        <option value="arcoseno">Arco Seno (arcsin)</option>
+                        <option value="arcocosseno">Arco Cosseno (arccos)</option>
+                        <option value="arcotangente">Arco Tangente (arctan)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-group full">
+                <div><label>Valor/Ângulo (graus)</label><input type="number" id="trigVal" placeholder="ex: 45"></div>
+            </div>
+            <div class="button-group">
+                <button onclick="calcularTrigonometria()">Calcular</button>
+            </div>
+            <div class="result-box" id="trigResult" style="display:none;">
+                <div class="result-label">Resultado</div>
+                <div class="result-value" id="trigValue">0</div>
+            </div>
+            <div class="error" id="trigError"></div>
+        </div>
+        
+        <!-- HIPERBÓLICAS -->
+        <div class="tab-content" id="aba2">
+            <div class="input-group">
+                <div>
+                    <label>Função</label>
+                    <select id="hypFunc" style="width:100%; padding:12px; border:2px solid #e0e0e0; border-radius:8px;">
+                        <option value="sinh">sinh</option>
+                        <option value="cosh">cosh</option>
+                        <option value="tanh">tanh</option>
+                        <option value="log10">log₁₀</option>
+                        <option value="ln">ln</option>
+                        <option value="exp">e^x</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-group full">
+                <div><label>Valor</label><input type="number" id="hypVal" placeholder="ex: 2"></div>
+            </div>
+            <div class="button-group">
+                <button onclick="calcularHiperbolica()">Calcular</button>
+            </div>
+            <div class="result-box" id="hypResult" style="display:none;">
+                <div class="result-label">Resultado</div>
+                <div class="result-value" id="hypValue">0</div>
+            </div>
+            <div class="error" id="hypError"></div>
+        </div>
+        
+        <!-- FUNÇÕES ESPECIAIS -->
+        <div class="tab-content" id="aba3">
+            <div class="input-group">
+                <div>
+                    <label>Tipo</label>
+                    <select id="espType" style="width:100%; padding:12px; border:2px solid #e0e0e0; border-radius:8px;" onchange="atualizarEspeciais()">
+                        <option value="fatorial">Fatorial (x!)</option>
+                        <option value="perm">Permutação (nPr)</option>
+                        <option value="comb">Combinação (nCr)</option>
+                        <option value="retpolar">Retangular → Polar</option>
+                        <option value="polret">Polar → Retangular</option>
+                    </select>
+                </div>
+            </div>
+            <div id="espFatorial">
+                <div class="input-group full">
+                    <div><label>N</label><input type="number" id="espFatN" placeholder="ex: 5"></div>
+                </div>
+                <button onclick="calcularEspecial('fatorial')">Calcular</button>
+            </div>
+            <div id="espPerm" style="display:none;">
+                <div class="input-group">
+                    <div><label>N</label><input type="number" id="espPermN" placeholder="ex: 10"></div>
+                    <div><label>R</label><input type="number" id="espPermR" placeholder="ex: 3"></div>
+                </div>
+                <button onclick="calcularEspecial('perm')">Calcular</button>
+            </div>
+            <div id="espComb" style="display:none;">
+                <div class="input-group">
+                    <div><label>N</label><input type="number" id="espCombN" placeholder="ex: 10"></div>
+                    <div><label>R</label><input type="number" id="espCombR" placeholder="ex: 3"></div>
+                </div>
+                <button onclick="calcularEspecial('comb')">Calcular</button>
+            </div>
+            <div id="espRetPol" style="display:none;">
+                <div class="input-group">
+                    <div><label>X</label><input type="number" id="espRetX" placeholder="ex: 3"></div>
+                    <div><label>Y</label><input type="number" id="espRetY" placeholder="ex: 4"></div>
+                </div>
+                <button onclick="calcularEspecial('retpolar')">Calcular</button>
+            </div>
+            <div id="espPolRet" style="display:none;">
+                <div class="input-group">
+                    <div><label>R</label><input type="number" id="espPolR" placeholder="ex: 5"></div>
+                    <div><label>θ (graus)</label><input type="number" id="espPolTheta" placeholder="ex: 45"></div>
+                </div>
+                <button onclick="calcularEspecial('polret')">Calcular</button>
+            </div>
+            <div class="result-box" id="espResult" style="display:none;">
+                <div class="result-label">Resultado</div>
+                <div class="result-value" id="espValue">0</div>
+            </div>
+            <div class="error" id="espError"></div>
+        </div>
+        
+        <!-- RETA -->
+        <div class="tab-content" id="aba4">
+            <div class="input-group">
+                <div>
+                    <label>Tipo</label>
+                    <select id="retaType" style="width:100%; padding:12px; border:2px solid #e0e0e0; border-radius:8px;" onchange="atualizarReta()">
+                        <option value="2pontos">Por 2 Pontos</option>
+                        <option value="ponto">Por Ponto + Coef. Angular</option>
+                    </select>
+                </div>
+            </div>
+            <div id="reta2P">
+                <div class="input-group">
+                    <div><label>X₁</label><input type="number" id="retaX1" placeholder="ex: 0"></div>
+                    <div><label>Y₁</label><input type="number" id="retaY1" placeholder="ex: 0"></div>
+                </div>
+                <div class="input-group">
+                    <div><label>X₂</label><input type="number" id="retaX2" placeholder="ex: 2"></div>
+                    <div><label>Y₂</label><input type="number" id="retaY2" placeholder="ex: 4"></div>
+                </div>
+                <button onclick="calcularReta('2pontos')">Calcular</button>
+            </div>
+            <div id="retaP" style="display:none;">
+                <div class="input-group">
+                    <div><label>X₁</label><input type="number" id="retaPX1" placeholder="ex: 1"></div>
+                    <div><label>Y₁</label><input type="number" id="retaPY1" placeholder="ex: 2"></div>
+                </div>
+                <div class="input-group full">
+                    <div><label>Coef. Angular (m)</label><input type="number" id="retaPM" placeholder="ex: 2"></div>
+                </div>
+                <button onclick="calcularReta('ponto')">Calcular</button>
+            </div>
+            <div class="result-box" id="retaResult" style="display:none;">
+                <div class="result-label">Resultado</div>
+                <div class="result-value" id="retaValue">0</div>
+            </div>
+            <div class="error" id="retaError"></div>
+        </div>
+        
+        <!-- CIRCUNFERÊNCIA -->
+        <div class="tab-content" id="aba5">
+            <div class="input-group">
+                <div>
+                    <label>Tipo</label>
+                    <select id="circType" style="width:100%; padding:12px; border:2px solid #e0e0e0; border-radius:8px;" onchange="atualizarCirc()">
+                        <option value="centro">Por Centro e Raio</option>
+                        <option value="equacao">Análise de Equação Geral</option>
+                    </select>
+                </div>
+            </div>
+            <div id="circCentro">
+                <div class="input-group">
+                    <div><label>Xc</label><input type="number" id="circXc" placeholder="ex: 0"></div>
+                    <div><label>Yc</label><input type="number" id="circYc" placeholder="ex: 0"></div>
+                </div>
+                <div class="input-group full">
+                    <div><label>Raio</label><input type="number" id="circR" placeholder="ex: 5"></div>
+                </div>
+                <button onclick="calcularCirc('centro')">Calcular</button>
+            </div>
+            <div id="circEq" style="display:none;">
+                <p style="color: #666; margin-bottom: 15px; font-size: 0.9em;">Formato: x² + y² + Ax + By + C = 0</p>
+                <div class="input-group">
+                    <div><label>A (coef. x)</label><input type="number" id="circA" placeholder="ex: -6"></div>
+                    <div><label>B (coef. y)</label><input type="number" id="circB" placeholder="ex: -8"></div>
+                </div>
+                <div class="input-group full">
+                    <div><label>C (termo indep.)</label><input type="number" id="circC" placeholder="ex: 0"></div>
+                </div>
+                <button onclick="calcularCirc('equacao')">Calcular</button>
+            </div>
+            <div class="result-box" id="circResult" style="display:none;">
+                <div class="result-label">Resultado</div>
+                <div class="result-value" id="circValue">0</div>
+            </div>
+            <div class="error" id="circError"></div>
+        </div>
+    </div>
+    
+    <script>
+        let ansValue = 0;
+        
+        function atualizarANS() {
+            document.getElementById('ansDisplay').textContent = `ANS = ${ansValue.toFixed(6).replace(/\.?0+$/, '')}`;
+        }
+        
+        function mudarAba(indice) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById('aba' + indice).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        function lerNumero(input) {
+            let val = document.getElementById(input).value;
+            if (val.toLowerCase() === 'ans') return ansValue;
+            return parseFloat(val);
+        }
+        
+        async function enviarCalculo(dados, resultId, errorId, valueId) {
+            try {
+                document.getElementById(errorId).classList.remove('show');
+                const response = await fetch('/api/calculo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                });
+                
+                const resultado = await response.json();
+                
+                if (response.ok) {
+                    if (resultado.resultado !== undefined) {
+                        ansValue = resultado.resultado;
+                    } else if (resultado.r !== undefined) {
+                        ansValue = resultado.r;
+                        document.getElementById(valueId).textContent = `r: ${resultado.r.toFixed(6)}, θ: ${resultado.theta.toFixed(6)}°`;
+                        document.getElementById(resultId).style.display = 'block';
+                        atualizarANS();
+                        return;
+                    } else if (resultado.x !== undefined) {
+                        ansValue = resultado.x;
+                        document.getElementById(valueId).textContent = `X: ${resultado.x.toFixed(6)}, Y: ${resultado.y.toFixed(6)}`;
+                        document.getElementById(resultId).style.display = 'block';
+                        atualizarANS();
+                        return;
+                    } else {
+                        document.getElementById(valueId).textContent = JSON.stringify(resultado, null, 2).substring(0, 200);
+                        document.getElementById(resultId).style.display = 'block';
+                        atualizarANS();
+                        return;
+                    }
+                    document.getElementById(valueId).textContent = typeof resultado.resultado === 'number' ? resultado.resultado.toFixed(6).replace(/\.?0+$/, '') : resultado.resultado;
+                    document.getElementById(resultId).style.display = 'block';
+                    atualizarANS();
+                } else {
+                    document.getElementById(errorId).textContent = resultado.erro;
+                    document.getElementById(errorId).classList.add('show');
+                }
+            } catch (err) {
+                document.getElementById(errorId).textContent = 'Erro na comunicação com o servidor';
+                document.getElementById(errorId).classList.add('show');
+            }
+        }
+        
+        function calcularAritmetica() {
+            const op = document.getElementById('aritOp').value;
+            const n1 = lerNumero('arit1');
+            const n2 = lerNumero('arit2');
+            enviarCalculo({ tipo: op, n1, n2 }, 'aritResult', 'aritError', 'aritValue');
+        }
+        
+        function calcularRaiz() {
+            const n = lerNumero('aritN');
+            enviarCalculo({ tipo: 'raiz', n }, 'aritResult', 'aritError', 'aritValue');
+        }
+        
+        function obterPI() {
+            enviarCalculo({ tipo: 'pi' }, 'aritResult', 'aritError', 'aritValue');
+        }
+        
+        function calcularTrigonometria() {
+            const func = document.getElementById('trigFunc').value;
+            const valor = lerNumero('trigVal');
+            enviarCalculo({ tipo: func, valor }, 'trigResult', 'trigError', 'trigValue');
+        }
+        
+        function calcularHiperbolica() {
+            const func = document.getElementById('hypFunc').value;
+            const valor = lerNumero('hypVal');
+            enviarCalculo({ tipo: func, valor }, 'hypResult', 'hypError', 'hypValue');
+        }
+        
+        function atualizarEspeciais() {
+            const tipo = document.getElementById('espType').value;
+            document.querySelectorAll('[id^="esp"]').forEach(el => {
+                if (el.id !== 'espType' && el.id !== 'espResult' && el.id !== 'espError' && el.id !== 'espValue') {
+                    el.style.display = 'none';
+                }
+            });
+            document.getElementById('esp' + tipo.charAt(0).toUpperCase() + tipo.slice(1)).style.display = 'block';
+        }
+        
+        function calcularEspecial(tipo) {
+            let dados = { tipo };
+            if (tipo === 'fatorial') {
+                dados.n = parseInt(document.getElementById('espFatN').value);
+            } else if (tipo === 'perm') {
+                dados.n = parseInt(document.getElementById('espPermN').value);
+                dados.r = parseInt(document.getElementById('espPermR').value);
+            } else if (tipo === 'comb') {
+                dados.n = parseInt(document.getElementById('espCombN').value);
+                dados.r = parseInt(document.getElementById('espCombR').value);
+            } else if (tipo === 'retpolar') {
+                dados.x = parseFloat(document.getElementById('espRetX').value);
+                dados.y = parseFloat(document.getElementById('espRetY').value);
+            } else if (tipo === 'polret') {
+                dados.r = parseFloat(document.getElementById('espPolR').value);
+                dados.theta = parseFloat(document.getElementById('espPolTheta').value);
+            }
+            enviarCalculo(dados, 'espResult', 'espError', 'espValue');
+        }
+        
+        function atualizarReta() {
+            const tipo = document.getElementById('retaType').value;
+            document.getElementById('reta2P').style.display = tipo === '2pontos' ? 'block' : 'none';
+            document.getElementById('retaP').style.display = tipo === 'ponto' ? 'block' : 'none';
+        }
+        
+        function calcularReta(tipo) {
+            let dados = { tipo: tipo === '2pontos' ? 'retapor2pontos' : 'retaporponto' };
+            if (tipo === '2pontos') {
+                dados.x1 = parseFloat(document.getElementById('retaX1').value);
+                dados.y1 = parseFloat(document.getElementById('retaY1').value);
+                dados.x2 = parseFloat(document.getElementById('retaX2').value);
+                dados.y2 = parseFloat(document.getElementById('retaY2').value);
+            } else {
+                dados.x1 = parseFloat(document.getElementById('retaPX1').value);
+                dados.y1 = parseFloat(document.getElementById('retaPY1').value);
+                dados.m = parseFloat(document.getElementById('retaPM').value);
+            }
+            enviarCalculo(dados, 'retaResult', 'retaError', 'retaValue');
+        }
+        
+        function atualizarCirc() {
+            const tipo = document.getElementById('circType').value;
+            document.getElementById('circCentro').style.display = tipo === 'centro' ? 'block' : 'none';
+            document.getElementById('circEq').style.display = tipo === 'equacao' ? 'block' : 'none';
+        }
+        
+        function calcularCirc(tipo) {
+            let dados = { tipo: tipo === 'centro' ? 'circpocentro' : 'circequacao' };
+            if (tipo === 'centro') {
+                dados.xc = parseFloat(document.getElementById('circXc').value);
+                dados.yc = parseFloat(document.getElementById('circYc').value);
+                dados.r = parseFloat(document.getElementById('circR').value);
+            } else {
+                dados.A = parseFloat(document.getElementById('circA').value);
+                dados.B = parseFloat(document.getElementById('circB').value);
+                dados.C = parseFloat(document.getElementById('circC').value);
+            }
+            enviarCalculo(dados, 'circResult', 'circError', 'circValue');
+        }
+        
+        // Inicializar
+        atualizarEspeciais();
+        atualizarReta();
+        atualizarCirc();
+    </script>
+</body>
+</html>

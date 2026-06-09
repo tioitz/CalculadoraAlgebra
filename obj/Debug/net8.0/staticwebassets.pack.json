@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "/home/namiki/Documentos/Namiki/CalculadoraAlgebra/wwwroot/index.html",
+      "PackagePath": "staticwebassets/index.html"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.CalculadoraAlgebra.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.CalculadoraAlgebra.props",
+      "PackagePath": "build\\CalculadoraAlgebra.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.CalculadoraAlgebra.props",
+      "PackagePath": "buildMultiTargeting\\CalculadoraAlgebra.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.CalculadoraAlgebra.props",
+      "PackagePath": "buildTransitive\\CalculadoraAlgebra.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
