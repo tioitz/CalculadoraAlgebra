@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="wwwroot/**" CopyToPublishDirectory="PreserveNewest" />
+    <Content Include="wwwroot\**" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
