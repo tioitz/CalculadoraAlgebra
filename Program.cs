@@ -63,19 +63,10 @@ IResult ResultadoPolRet(Dictionary<string, object> dados)
     return Results.Ok(new { x = result.Item1, y = result.Item2 });
 }
 
-app.MapGet("/", async (HttpContext ctx) =>
+app.MapGet("/", () =>
 {
-    var indexPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "index.html");
-    if (System.IO.File.Exists(indexPath))
-    {
-        ctx.Response.ContentType = "text/html";
-        await ctx.Response.SendFileAsync(indexPath);
-    }
-    else
-    {
-        ctx.Response.StatusCode = 404;
-        await ctx.Response.WriteAsJsonAsync(new { erro = $"Arquivo não encontrado: {indexPath}" });
-    }
+    var html = System.IO.File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "wwwroot/index.html"));
+    return Results.Content(html, "text/html");
 });
 
 app.Run();
