@@ -63,10 +63,24 @@ IResult ResultadoPolRet(Dictionary<string, object> dados)
     return Results.Ok(new { x = result.Item1, y = result.Item2 });
 }
 
+app.MapGet("/test", () => Results.Ok(new { status = "OK", baseDir = AppContext.BaseDirectory }));
+
 app.MapGet("/", () =>
 {
-    var html = System.IO.File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "wwwroot/index.html"));
-    return Results.Content(html, "text/html");
+    try
+    {
+        var htmlPath = Path.Combine(AppContext.BaseDirectory, "wwwroot", "index.html");
+        if (!System.IO.File.Exists(htmlPath))
+        {
+            return Results.Ok($"Arquivo não encontrado: {htmlPath}");
+        }
+        var html = System.IO.File.ReadAllText(htmlPath);
+        return Results.Content(html, "text/html");
+    }
+    catch (Exception ex)
+    {
+        return Results.Ok($"Erro: {ex.Message}");
+    }
 });
 
 app.Run();
